@@ -138,7 +138,7 @@ img {
 }
 
 .nav-logo img {
-    height: 65px;
+    height:120px;
     transition: height 0.3s ease;
 }
 
