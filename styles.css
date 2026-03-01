@@ -73,6 +73,7 @@ img {
     cursor: pointer;
     transition: all 0.3s ease;
     border: none;
+    text-align: center;
 }
 
 .btn-primary {
@@ -86,15 +87,21 @@ img {
     box-shadow: 0 4px 15px rgba(251, 221, 174, 0.5);
 }
 
-.btn-secondary {
-    background: transparent;
-    color: #fbddae;
-    border: 2px solid #fbddae;
-}
-
-.btn-secondary:hover {
+/* ===== HERO BUTTONS (consistent matching style) ===== */
+.hero-btn {
     background: #fbddae;
     color: #060505;
+    padding: 16px 36px;
+    min-width: 220px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.hero-btn:hover {
+    background: #f5c87a;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(251, 221, 174, 0.5);
 }
 
 /* ===== NAVIGATION ===== */
@@ -124,8 +131,29 @@ img {
     align-items: center;
 }
 
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
 .nav-logo img {
+    height: 120px;
+    transition: height 0.3s ease;
+}
+
+#navbar.scrolled .nav-logo img {
     height: 50px;
+}
+
+.nav-company-name {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.2;
 }
 
 .nav-menu {
@@ -201,19 +229,18 @@ img {
     z-index: 1;
     color: #fff;
     padding: 20px;
+    max-width: 800px;
 }
 
-.hero-logo {
-    width: 150px;
-    margin: 0 auto 20px;
-}
-
-#hero h1 {
-    font-size: 3.5rem;
+.hero-slogan {
+    font-size: 2.8rem;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 800;
+    color: #fff;
     margin-bottom: 10px;
     text-transform: uppercase;
     letter-spacing: 2px;
+    line-height: 1.2;
 }
 
 .tagline {
@@ -221,17 +248,21 @@ img {
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     color: #fbddae;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
+    font-style: italic;
 }
 
 .subtitle {
     font-size: 1.2rem;
-    margin-bottom: 30px;
-    opacity: 0.9;
+    margin-bottom: 40px;
+    opacity: 0.85;
 }
 
-.hero-content .btn {
-    margin: 0 10px 10px;
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 /* ===== ABOUT ===== */
@@ -669,6 +700,14 @@ footer {
         display: flex;
     }
 
+    .nav-company-name {
+        font-size: 1rem;
+    }
+
+    .nav-logo img {
+        height: 50px;
+    }
+
     .nav-menu {
         position: fixed;
         top: 0;
@@ -692,8 +731,8 @@ footer {
         font-size: 1.2rem;
     }
 
-    #hero h1 {
-        font-size: 2rem;
+    .hero-slogan {
+        font-size: 1.8rem;
     }
 
     .tagline {
@@ -735,20 +774,42 @@ footer {
     .carousel-btn-right {
         right: 10px;
     }
+
+    .hero-btn {
+        min-width: 200px;
+        padding: 14px 28px;
+        font-size: 1rem;
+    }
 }
 
 @media (max-width: 480px) {
-    #hero h1 {
-        font-size: 1.6rem;
+    .hero-slogan {
+        font-size: 1.5rem;
+    }
+
+    .tagline {
+        font-size: 1.1rem;
     }
 
     .section-title {
         font-size: 2rem;
     }
 
-    .hero-content .btn {
-        display: block;
-        margin: 10px auto;
-        max-width: 250px;
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-btn {
+        width: 100%;
+        max-width: 260px;
+    }
+
+    .nav-company-name {
+        font-size: 0.85rem;
+    }
+
+    .nav-logo img {
+        height: 40px;
     }
 }
