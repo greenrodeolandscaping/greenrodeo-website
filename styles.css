@@ -612,7 +612,13 @@ img {
 .contact-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 5px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
 }
 
 .contact-form input,
@@ -633,6 +639,29 @@ img {
 
 .contact-form textarea {
     resize: vertical;
+}
+
+/* ===== FORM VALIDATION ===== */
+.contact-form input.input-error,
+.contact-form textarea.input-error {
+    border-color: #d32f2f;
+}
+
+.contact-form input.input-valid {
+    border-color: #9ca65c;
+}
+
+.field-error {
+    display: none;
+    color: #d32f2f;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    padding-left: 5px;
+    font-weight: 600;
+}
+
+.field-error.show {
+    display: block;
 }
 
 /* ===== FORM SUCCESS ===== */

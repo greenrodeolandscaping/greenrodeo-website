@@ -111,21 +111,188 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
 });
 
-// Contact form handler — Google Sheets
+// ===== PHONE NUMBER FORMATTING =====
+const phoneInput = document.getElementById('phoneInput');
+const phoneError = document.getElementById('phoneError');
+
+function formatPhoneNumber(value) {
+    // Remove all non-digit characters
+    const digits = value.replace(/\D/g, '');
+    
+    // Limit to 10 digits
+    const limited = digits.substring(0, 10);
+    
+    // Build formatted string as user types
+    if (limited.length === 0) {
+        return '';
+    } else if (limited.length <= 3) {
+        return '(' + limited;
+    } else if (limited.length <= 6) {
+        return '(' + limited.substring(0, 3) + ') ' + limited.substring(3);
+    } else {
+        return '(' + limited.substring(0, 3) + ') ' + limited.substring(3, 6) + '-' + limited.substring(6);
+    }
+}
+
+function isValidPhone(value) {
+    // Empty is valid (field is optional)
+    if (value.trim() === '') return true;
+    // Must match (123) 456-7890 format exactly
+    const phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
+    return phoneRegex.test(value);
+}
+
+phoneInput.addEventListener('input', (e) => {
+    const cursorPos = e.target.selectionStart;
+    const beforeFormat = e.target.value;
+    const formatted = formatPhoneNumber(beforeFormat);
+    e.target.value = formatted;
+    
+    // Clear error while typing
+    if (formatted === '' || isValidPhone(formatted)) {
+        phoneInput.classList.remove('input-error');
+        phoneInput.classList.toggle('input-valid', formatted !== '' && isValidPhone(formatted));
+        phoneError.classList.remove('show');
+    }
+});
+
+phoneInput.addEventListener('blur', () => {
+    const value = phoneInput.value.trim();
+    if (value !== '' && !isValidPhone(value)) {
+        phoneInput.classList.add('input-error');
+        phoneInput.classList.remove('input-valid');
+        phoneError.classList.add('show');
+    } else if (value !== '' && isValidPhone(value)) {
+        phoneInput.classList.remove('input-error');
+        phoneInput.classList.add('input-valid');
+        phoneError.classList.remove('show');
+    } else {
+        phoneInput.classList.remove('input-error', 'input-valid');
+        phoneError.classList.remove('show');
+    }
+});
+
+// ===== FORM VALIDATION & SUBMISSION =====
 const contactForm = document.getElementById('contactForm');
+const nameInput = contactForm.querySelector('[name="name"]');
+const emailInput = contactForm.querySelector('[name="email"]');
+const messageInput = contactForm.querySelector('[name="message"]');
+const nameError = document.getElementById('nameError');
+const emailError = document.getElementById('emailError');
+const messageError = document.getElementById('messageError');
+
+// Real-time validation on blur for all fields
+nameInput.addEventListener('blur', () => {
+    if (nameInput.value.trim() === '') {
+        nameInput.classList.add('input-error');
+        nameInput.classList.remove('input-valid');
+        nameError.classList.add('show');
+    } else {
+        nameInput.classList.remove('input-error');
+        nameInput.classList.add('input-valid');
+        nameError.classList.remove('show');
+    }
+});
+
+nameInput.addEventListener('input', () => {
+    if (nameInput.value.trim() !== '') {
+        nameInput.classList.remove('input-error');
+        nameInput.classList.add('input-valid');
+        nameError.classList.remove('show');
+    }
+});
+
+emailInput.addEventListener('blur', () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailInput.value.trim() === '' || !emailRegex.test(emailInput.value.trim())) {
+        emailInput.classList.add('input-error');
+        emailInput.classList.remove('input-valid');
+        emailError.classList.add('show');
+    } else {
+        emailInput.classList.remove('input-error');
+        emailInput.classList.add('input-valid');
+        emailError.classList.remove('show');
+    }
+});
+
+emailInput.addEventListener('input', () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailRegex.test(emailInput.value.trim())) {
+        emailInput.classList.remove('input-error');
+        emailInput.classList.add('input-valid');
+        emailError.classList.remove('show');
+    }
+});
+
+messageInput.addEventListener('blur', () => {
+    if (messageInput.value.trim() === '') {
+        messageInput.classList.add('input-error');
+        messageInput.classList.remove('input-valid');
+        messageError.classList.add('show');
+    } else {
+        messageInput.classList.remove('input-error');
+        messageInput.classList.add('input-valid');
+        messageError.classList.remove('show');
+    }
+});
+
+messageInput.addEventListener('input', () => {
+    if (messageInput.value.trim() !== '') {
+        messageInput.classList.remove('input-error');
+        messageInput.classList.add('input-valid');
+        messageError.classList.remove('show');
+    }
+});
+
+// Form submission
 contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
     
+    let isValid = true;
+    
+    // Validate name
+    if (nameInput.value.trim() === '') {
+        nameInput.classList.add('input-error');
+        nameError.classList.add('show');
+        isValid = false;
+    }
+    
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailInput.value.trim() === '' || !emailRegex.test(emailInput.value.trim())) {
+        emailInput.classList.add('input-error');
+        emailError.classList.add('show');
+        isValid = false;
+    }
+    
+    // Validate phone (only if something was entered)
+    if (phoneInput.value.trim() !== '' && !isValidPhone(phoneInput.value.trim())) {
+        phoneInput.classList.add('input-error');
+        phoneError.classList.add('show');
+        isValid = false;
+    }
+    
+    // Validate message
+    if (messageInput.value.trim() === '') {
+        messageInput.classList.add('input-error');
+        messageError.classList.add('show');
+        isValid = false;
+    }
+    
+    // Stop if validation fails
+    if (!isValid) return;
+    
+    // All valid — submit
     const submitBtn = contactForm.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
     submitBtn.textContent = 'Sending...';
     submitBtn.disabled = true;
     
     const formData = {
-        name: contactForm.querySelector('[name="name"]').value,
-        email: contactForm.querySelector('[name="email"]').value,
-        phone: contactForm.querySelector('[name="phone"]').value,
-        message: contactForm.querySelector('[name="message"]').value
+        name: nameInput.value,
+        email: emailInput.value,
+        phone: phoneInput.value,
+        message: messageInput.value
     };
     
     fetch('https://script.google.com/macros/s/AKfycbxYD8HypazCC6Eks8W_F--pcrqv_lCQZvORMU-tKYgvP_fL4Sqr1Ixz-SWZc6hOpVTFeg/exec', {
