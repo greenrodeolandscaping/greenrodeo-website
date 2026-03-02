@@ -138,12 +138,12 @@ img {
 }
 
 .nav-logo img {
-    height:120px;
+    height: 80px;
     transition: height 0.3s ease;
 }
 
 #navbar.scrolled .nav-logo img {
-    height: 50px;
+    height: 60px;
 }
 
 .nav-company-name {
@@ -633,6 +633,29 @@ img {
 
 .contact-form textarea {
     resize: vertical;
+}
+
+/* ===== FORM SUCCESS ===== */
+.form-success {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.form-success i {
+    font-size: 3rem;
+    color: #9ca65c;
+    margin-bottom: 15px;
+}
+
+.form-success h3 {
+    font-size: 1.5rem;
+    color: #767e42;
+    margin-bottom: 10px;
+}
+
+.form-success p {
+    color: #555;
+    font-size: 1.1rem;
 }
 
 /* ===== FOOTER ===== */
