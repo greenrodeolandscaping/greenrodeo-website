@@ -71,7 +71,6 @@ function goToSlide(index) {
     currentSlide = index;
     track.style.transform = `translateX(-${currentSlide * 100}%)`;
 
-    // Update dots
     dotsContainer.querySelectorAll('.carousel-dot').forEach((dot, i) => {
         dot.classList.toggle('active', i === currentSlide);
     });
@@ -152,3 +151,19 @@ contactForm.addEventListener('submit', (e) => {
         alert('Oops! Something went wrong. Please try calling us at (705) 391-7116.');
     });
 });
+
+// Scroll Animations
+const animateElements = document.querySelectorAll('.animate-on-scroll');
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+        }
+    });
+}, {
+    threshold: 0.15
+});
+
+animateElements.forEach(el => observer.observe(el));
