@@ -112,10 +112,43 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
 });
 
-// Contact form handler
+// Contact form handler — Google Sheets
 const contactForm = document.getElementById('contactForm');
 contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    alert('Thank you for your message! We will get back to you soon.');
-    contactForm.reset();
+    
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+    
+    const formData = {
+        name: contactForm.querySelector('[name="name"]').value,
+        email: contactForm.querySelector('[name="email"]').value,
+        phone: contactForm.querySelector('[name="phone"]').value,
+        message: contactForm.querySelector('[name="message"]').value
+    };
+    
+    fetch('https://script.google.com/macros/s/AKfycbxYD8HypazCC6Eks8W_F--pcrqv_lCQZvORMU-tKYgvP_fL4Sqr1Ixz-SWZc6hOpVTFeg/exec', {
+        method: 'POST',
+        body: JSON.stringify(formData),
+        headers: {
+            'Content-Type': 'text/plain'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.result === 'success') {
+            contactForm.innerHTML = '<div class="form-success"><i class="fas fa-check-circle"></i><h3>Message Sent!</h3><p>Thank you for reaching out. We\'ll get back to you soon!</p></div>';
+        } else {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+            alert('Oops! Something went wrong. Please try calling us at (705) 391-7116.');
+        }
+    })
+    .catch(error => {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+        alert('Oops! Something went wrong. Please try calling us at (705) 391-7116.');
+    });
 });
