@@ -295,7 +295,7 @@ contactForm.addEventListener('submit', (e) => {
         message: messageInput.value
     };
     
-    fetch('https://script.google.com/macros/s/AKfycbxYD8HypazCC6Eks8W_F--pcrqv_lCQZvORMU-tKYgvP_fL4Sqr1Ixz-SWZc6hOpVTFeg/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbz7COCN05iV_BsYhXiLmquGYEhS4pT_b-K_3XE6AWwewNphKN8VF6hLHDhrQxg0y8TOmQ/exec', {
         method: 'POST',
         body: JSON.stringify(formData),
         headers: {
