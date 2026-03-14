@@ -334,3 +334,22 @@ const observer = new IntersectionObserver((entries) => {
 });
 
 animateElements.forEach(el => observer.observe(el));
+
+// ===== STICKY MOBILE BAR =====
+const stickyBar = document.getElementById('stickyBar');
+const heroSection = document.getElementById('hero');
+
+function toggleStickyBar() {
+    if (!stickyBar) return;
+
+    // Show bar once user scrolls past the hero section
+    const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+    if (window.scrollY > heroBottom - 200) {
+        stickyBar.classList.add('visible');
+    } else {
+        stickyBar.classList.remove('visible');
+    }
+}
+
+window.addEventListener('scroll', toggleStickyBar);
+window.addEventListener('load', toggleStickyBar);
